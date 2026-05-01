@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(psql --version)",
+      "Bash(pg_isready)",
+      "Bash(brew list *)",
+      "Bash(export PATH=\"/opt/homebrew/opt/postgresql@16/bin:$PATH\")",
+      "Bash(psql postgres *)",
+      "Bash(pip install *)",
+      "Bash(pip3 install *)",
+      "Bash(python3 -m pip install psycopg2-binary --quiet)",
+      "Bash(psql farmsure *)",
+      "Bash(python3 *)"
+    ]
+  }
+}
