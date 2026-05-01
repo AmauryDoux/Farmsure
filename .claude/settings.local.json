@@ -10,7 +10,8 @@
       "Bash(pip3 install *)",
       "Bash(python3 -m pip install psycopg2-binary --quiet)",
       "Bash(psql farmsure *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(chmod +x *)"
     ]
   }
 }
