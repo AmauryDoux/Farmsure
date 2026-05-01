@@ -5,10 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql://farmsure:farmsure@localhost:5432/farmsure",
-)
+DATABASE_URL = os.environ["DATABASE_URL"]
 
 
 def get_connection():

@@ -1,3 +1,4 @@
+import os
 from .connection import get_connection, _cur, _row
 from .users import _hash
 
@@ -19,7 +20,11 @@ def init_admin_db():
     if c.fetchone()["cnt"] == 0:
         c.execute(
             "INSERT INTO admins (full_name, email, password_hash) VALUES (%s, %s, %s)",
-            ("Sarah Mitchell", "admin@farmsure.com", _hash("admin123")),
+            (
+                os.environ["DEFAULT_ADMIN_NAME"],
+                os.environ["DEFAULT_ADMIN_EMAIL"],
+                _hash(os.environ["DEFAULT_ADMIN_PASSWORD"]),
+            ),
         )
         conn.commit()
     c.close()
