@@ -11,7 +11,11 @@
       "Bash(python3 -m pip install psycopg2-binary --quiet)",
       "Bash(psql farmsure *)",
       "Bash(python3 *)",
-      "Bash(chmod +x *)"
+      "Bash(chmod +x *)",
+      "Bash(docker exec farmers_insurance-db-1 *)",
+      "Bash(psql *)",
+      "Skill(claude-api)",
+      "Bash(docker compose ps *)"
     ]
   }
 }
