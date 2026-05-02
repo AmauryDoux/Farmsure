@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from tkinter import messagebox
+from farmsure.ui.modal import ask_confirm
 from farmsure.ui.theme import C
 from farmsure.ui.widgets import Card, Heading, SectionLabel, FieldLabel, ModernEntry, PrimaryButton
 import farmsure.db as db
@@ -88,8 +88,15 @@ class ProfilePage(ctk.CTkScrollableFrame):
         if not name:
             self._err.configure(text="Full name is required.")
             return
+        if not ask_confirm(
+            self.winfo_toplevel(),
+            "Save Changes",
+            "Update your profile with these details?",
+            icon="👤",
+        ):
+            return
+
         db.update_user(self._user["id"], name, farm, loc, phone)
         self._user = db.get_user(self._user["id"])
         self._err.configure(text="")
-        messagebox.showinfo("Profile Updated", "Your profile has been updated successfully.")
         self._on_updated(self._user)
