@@ -9,7 +9,6 @@ which are common agent output artefacts.
 import ast
 import pathlib
 
-
 def _repair_generated(path: pathlib.Path) -> None:
     if not path.exists():
         return
@@ -39,3 +38,4 @@ def _repair_generated(path: pathlib.Path) -> None:
 
 def pytest_sessionstart(session):
     _repair_generated(pathlib.Path("tests/test_generated.py"))
+# Test for PR testing
