@@ -1,0 +1,51 @@
+name: Tests
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER:     farmsure
+          POSTGRES_PASSWORD: farmsure
+          POSTGRES_DB:       farmsure
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U farmsure"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL:            postgresql://farmsure:farmsure@localhost:5432/farmsure
+      TEST_DATABASE_URL:       postgresql://farmsure:farmsure@localhost:5432/farmsure_test
+      DEFAULT_ADMIN_EMAIL:     ${{ secrets.DEFAULT_ADMIN_EMAIL }}
+      DEFAULT_ADMIN_NAME:      ${{ secrets.DEFAULT_ADMIN_NAME }}
+      DEFAULT_ADMIN_PASSWORD:  ${{ secrets.DEFAULT_ADMIN_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Create test database
+        run: |
+          PGPASSWORD=farmsure psql \
+            -h localhost -U farmsure -d farmsure \
+            -c "CREATE DATABASE farmsure_test OWNER farmsure;"
+
+      - name: Run tests
+        run: pytest tests/ -v
