@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from tkinter import messagebox
+from farmsure.ui.modal import ask_confirm
 from datetime import date, datetime
 from farmsure.ui.theme import C, CROP_TYPES, ISSUE_TYPES
 from farmsure.ui.widgets import Card, Heading, SectionLabel, FieldLabel, ModernEntry, PrimaryButton, GhostButton
@@ -142,13 +142,16 @@ class NewClaimPage(ctk.CTkScrollableFrame):
             self._err.configure(text="Date must be in YYYY-MM-DD format.")
             return
 
-        claim_number = db.create_claim(
-            self._user["id"], crop, issue, desc, inc, acres, loss)
+        if not ask_confirm(
+            self.winfo_toplevel(),
+            "Submit Claim",
+            f"Submit a {crop} claim for ${loss:,.2f}?\n\n"
+            "Our team will review it within 3–5 business days.",
+            icon="📋",
+        ):
+            return
+
+        db.create_claim(self._user["id"], crop, issue, desc, inc, acres, loss)
         self._err.configure(text="")
         self._clear()
-        messagebox.showinfo(
-            "Claim Submitted",
-            f"Your claim {claim_number} has been submitted successfully!\n\n"
-            "Our team will review it within 3–5 business days.",
-        )
         self._on_submitted()
